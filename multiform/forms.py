@@ -187,7 +187,10 @@ class MultiForm(BaseForm):
         return chain.from_iterable(self._combine_values('__iter__', call=True))
 
     def __getitem__(self, name):
-        return self.forms[name]
+        try:
+            return self.forms[name]
+        except KeyError:
+            return super(MultiForm, self).__getitem__(name)
 
     def _html_output(self, *args, **kwargs):
         rendered = self._combine_values('_html_output', call=True, filter=True,
